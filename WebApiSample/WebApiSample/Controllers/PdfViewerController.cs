@@ -23,10 +23,11 @@ using Syncfusion.Pdf;
 using System.Drawing;
 using Syncfusion.Pdf.Interactive;
 using Syncfusion.Pdf.Redaction;
+using System.Web.Http.Cors;
 
-namespace viewersample
+namespace WebApiSample.Controllers
 {
-
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class PdfViewerController : ApiController
     {
         [System.Web.Mvc.HttpPost]
@@ -45,8 +46,6 @@ namespace viewersample
                         byte[] bytes = System.IO.File.ReadAllBytes(documentPath);
 
                         stream = new MemoryStream(bytes);
-
-
                     }
                     else
                     {
@@ -62,6 +61,7 @@ namespace viewersample
             jsonResult = pdfviewer.Load(stream, jsonObject);
             return (JsonConvert.SerializeObject(jsonResult));
         }
+
         [System.Web.Mvc.HttpPost]
         public object Bookmarks(Dictionary<string, string> jsonObject)
         {
@@ -69,6 +69,7 @@ namespace viewersample
             var jsonResult = pdfviewer.GetBookmarks(jsonObject);
             return (jsonResult);
         }
+
         [System.Web.Mvc.HttpPost]
         public object RenderPdfPages(Dictionary<string, string> jsonObject)
         {
@@ -76,6 +77,7 @@ namespace viewersample
             object jsonResult = pdfviewer.GetPage(jsonObject);
             return (JsonConvert.SerializeObject(jsonResult));
         }
+
         [System.Web.Mvc.HttpPost]
         public object RenderThumbnailImages(Dictionary<string, string> jsonObject)
         {
@@ -83,6 +85,7 @@ namespace viewersample
             object result = pdfviewer.GetThumbnailImages(jsonObject);
             return (JsonConvert.SerializeObject(result));
         }
+
         [System.Web.Mvc.HttpPost]
         public object RenderPdfTexts(Dictionary<string, string> jsonObject)
         {
@@ -91,7 +94,6 @@ namespace viewersample
             return (JsonConvert.SerializeObject(result));
         }
 
-
         [System.Web.Mvc.HttpPost]
         public object RenderAnnotationComments(Dictionary<string, string> jsonObject)
         {
@@ -99,6 +101,7 @@ namespace viewersample
             object jsonResult = pdfviewer.GetAnnotationComments(jsonObject);
             return (jsonResult);
         }
+
         [System.Web.Mvc.HttpPost]
         public object Unload(Dictionary<string, string> jsonObject)
         {
@@ -106,6 +109,7 @@ namespace viewersample
             pdfviewer.ClearCache(jsonObject);
             return ("Document cache is cleared");
         }
+
         [System.Web.Mvc.HttpPost]
         public HttpResponseMessage Download(Dictionary<string, string> jsonObject)
         {
@@ -190,7 +194,6 @@ namespace viewersample
             // return (GetPlainText(documentBase));
         }
 
-
         [System.Web.Mvc.HttpPost]
         public HttpResponseMessage SaveinDB(Dictionary<string, string> jsonObject)
         {
@@ -263,9 +266,6 @@ namespace viewersample
             object jsonResult = pdfviewer.ImportFormFields(jsonObject);
             return (JsonConvert.SerializeObject(jsonResult));
         }
-
-
-
 
         private HttpResponseMessage GetPlainText(string pageImage)
         {
